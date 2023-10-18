@@ -23,16 +23,26 @@ export default function Login({ navigation }) {
         },
         data: JSON.stringify(userData),
       });
-      if (res.status == 200) {
+      if (res.status === 200) {
         const authToken = res.data.token;
-        await AsyncStorage.setItem("token", authToken);
-        Alert.alert("success", "Login Successfull", [
-          {
-            text: "OK",
-            onPress: () => {
-              navigation.replace("Home", userData.userId);
+
+        if (authToken) {
+          await AsyncStorage.setItem("token", authToken);
+
+          Alert.alert("Success", "Login Successful", [
+            {
+              text: "OK",
+              onPress: () => {
+                navigation.replace("Home", userId);
+              },
             },
-          },
+          ]);
+        } else {
+          Alert.alert("Login Failure", "Invalid Credentials", [{ text: "OK" }]);
+        }
+      } else {
+        Alert.alert("Login Failure", "Invalid Credentials", [
+          { text: "OK", onPress: () => console.log("OK Pressed") },
         ]);
       }
     } catch (err) {

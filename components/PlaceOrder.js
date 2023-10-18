@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Button, TextInput, FlatList, Alert } from "react-native";
+import { Text, View, Button, TextInput, FlatList, Alert, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useNavigation, CommonActions } from "@react-navigation/native";
@@ -107,17 +107,19 @@ function PlaceOrder({ route }) {
   };
 
   return (
-    <View style={{ margin: 30 }}>
+    <View style={styles.container}>
+      <View style={styles.productsContainer}>
       {productOptions && (
         <FlatList
           data={productOptions}
           keyExtractor={(item) => item.productId}
           renderItem={({ item }) => (
-            <View>
-              <Text>Id: {item.productId}</Text>
-              <Text>Name: {item.name}</Text>
+            <View style={styles.product}>
+              <Text style={styles.productText}>Id: {item.productId}</Text>
+              <Text style={styles.productText}>Name: {item.name}</Text>
               <TextInput
-                placeholder="Quantity"
+                style={styles.input}
+                placeholder="Qty in Kg"
                 keyboardType="numeric"
                 value={quantities[item.productId]}
                 onChangeText={(text) => updateQuantity(item.productId, text)}
@@ -126,10 +128,51 @@ function PlaceOrder({ route }) {
           )}
         />
       )}
-      <View style={{ height: 40 }} />
-      <Button title="Place Order" onPress={placeOrder} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Place Order" onPress={placeOrder} color='black'/>
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  buttonContainer: {
+    backgroundColor: "#ccc",
+    borderRadius: 5,
+    width: 300,
+    marginBottom: 60,
+  },
+  productsContainer: {
+    backgroundColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    flex: 1,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+    marginBottom: 10,
+    width: 150,
+  },
+  product: {
+    margin: 5,
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 5 
+  },
+  productText: {
+    margin: 2,
+  }
+})
 
 export default PlaceOrder;

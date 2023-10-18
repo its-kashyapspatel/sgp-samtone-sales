@@ -83,7 +83,7 @@ export default function Home({ route, navigation }) {
       </View>
 
       <View style={styles.ordersContainer}>
-        {userOrders && (
+        {userOrders.length > 0 ? (
           <FlatList
             data={userOrders}
             keyExtractor={(item) => item.orderId}
@@ -101,6 +101,10 @@ export default function Home({ route, navigation }) {
               </View>
             )}
           />
+        ):(
+          <View style={styles.noOrder}>
+            <Text>No orders yet.</Text>
+          </View>
         )}
       </View>
 
@@ -156,5 +160,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: 300,
     marginBottom: 20,
+  },
+  noOrder: {
+    width: 350,
   },
 });
